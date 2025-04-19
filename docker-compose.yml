@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: cinema-db
+    environment:
+      POSTGRES_DB: cinemadb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - cinema-network
+
+  backend:
+    build: ./cinema-app-backend
+    container_name: cinema-backend
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cinemadb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8082:8082"
+    networks:
+      - cinema-network
+
+  frontend:
+    build: 
+      context: ./cinema-app-frontend
+      dockerfile: Dockerfile.dev  
+    container_name: cinema-frontend
+    ports:
+      - "4200:4200" 
+    networks:
+      - cinema-network
+    volumes:
+      - ./cinema-app-frontend:/app  
+    command: npm run start
+
+networks:
+  cinema-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

@@ -1,0 +1,38 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.pnpm-debug.log*
+
+# Compilados
+dist/
+tmp/
+out-tsc/
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Angular
+.angular/
+coverage/
+.cache/
+.hmr/
+
+# Docker (si usas docker para dev)
+docker-compose.override.yml
+
+# Env
+.env
+.env.*.local
+
+# Otros
+*.local

@@ -7,7 +7,7 @@ import { Director } from '../models/Director';
   providedIn: 'root'
 })
 export class DirectorService {
-  private apiUrl = 'http://localhost:8082/api/directors'; 
+  private apiUrl = '/api/directors'; 
 
   constructor(private http: HttpClient) {}
 

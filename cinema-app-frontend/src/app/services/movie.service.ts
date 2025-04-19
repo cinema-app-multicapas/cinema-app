@@ -7,7 +7,7 @@ import { Movie } from '../models/Movie';
   providedIn: 'root'
 })
 export class MovieService {
-  private apiUrl = 'http://localhost:8082/api/movies'; 
+  private apiUrl = '/api/movies'; 
 
   constructor(private http: HttpClient) {}
 
