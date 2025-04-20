@@ -3,8 +3,6 @@ package com.puj.cinemapp.service;
 import com.puj.cinemapp.domain.dto.DirectorDTO;
 import com.puj.cinemapp.domain.model.Director;
 import com.puj.cinemapp.repository.DirectorRepository;
-import com.puj.cinemapp.repository.MovieRepository;
-
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
