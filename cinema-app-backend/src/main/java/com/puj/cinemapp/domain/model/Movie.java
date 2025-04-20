@@ -1,9 +1,11 @@
-package com.puj.cinemapp.model;
+package com.puj.cinemapp.domain.model;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
@@ -28,7 +30,8 @@ public class Movie {
     private int duration; // Duración en minutos
     private String posterUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "director_id")
     private Director director;
+
 }

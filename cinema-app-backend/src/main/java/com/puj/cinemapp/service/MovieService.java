@@ -1,10 +1,12 @@
 package com.puj.cinemapp.service;
 
-import com.puj.cinemapp.dto.MovieDTO;
-import com.puj.cinemapp.model.Director;
-import com.puj.cinemapp.model.Movie;
+import com.puj.cinemapp.domain.dto.MovieDTO;
+import com.puj.cinemapp.domain.model.Director;
+import com.puj.cinemapp.domain.model.Movie;
 import com.puj.cinemapp.repository.DirectorRepository;
 import com.puj.cinemapp.repository.MovieRepository;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,9 @@ public class MovieService {
 
     @Autowired
     private DirectorRepository directorRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     // Obtener todas las películas
     public List<MovieDTO> getAllMovies() {
@@ -59,10 +64,7 @@ public class MovieService {
             movie.setSynopsis(dto.getSynopsis());
             movie.setDuration(dto.getDuration());
             movie.setPosterUrl(dto.getPosterUrl());
-
-            Director director = directorRepository.findById(dto.getDirectorId())
-                    .orElseThrow(() -> new IllegalArgumentException("Director no encontrado"));
-            movie.setDirector(director);
+            movie.setDirector(dto.getDirector());
 
             return convertToDTO(movieRepository.save(movie));
         }
@@ -89,29 +91,13 @@ public class MovieService {
 
     // Convertir Movie a MovieDTO
     private MovieDTO convertToDTO(Movie movie) {
-        MovieDTO dto = new MovieDTO();
-        dto.setId(movie.getId());
-        dto.setTitle(movie.getTitle());
-        dto.setReleaseYear(movie.getReleaseYear());
-        dto.setGenre(movie.getGenre());
-        dto.setSynopsis(movie.getSynopsis());
-        dto.setDuration(movie.getDuration());
-        dto.setPosterUrl(movie.getPosterUrl());
-        dto.setDirectorId(movie.getDirector() != null ? movie.getDirector().getId() : null);
-        return dto;
+        return modelMapper.map(movie, MovieDTO.class);
     }
-
-    // Convertir MovieDTO a Movie
+    
     private Movie convertToEntity(MovieDTO dto, Director director) {
-        Movie movie = new Movie();
-        movie.setTitle(dto.getTitle());
-        movie.setReleaseYear(dto.getReleaseYear());
-        movie.setGenre(dto.getGenre());
-        movie.setSynopsis(dto.getSynopsis());
-        movie.setDuration(dto.getDuration());
-        movie.setPosterUrl(dto.getPosterUrl());
-        movie.setDirector(director);  // Asignar el director explícitamente
-
+        Movie movie = modelMapper.map(dto, Movie.class);
+        movie.setDirector(director); 
         return movie;
     }
+    
 }

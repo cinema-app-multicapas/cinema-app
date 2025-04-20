@@ -109,7 +109,8 @@ export class MainComponent implements OnInit {
   deleteDirector(director: Director): void {
     if (confirm(`¿Estás seguro de que deseas eliminar a ${director.name}?`)) {
       this.directorService.deleteDirector(director.id!).subscribe({
-        next: () => {
+        next: (response) => {
+          console.log('Respuesta del servidor:', response);
           this.directors = this.directors.filter(d => d.id !== director.id);
           this.snackBar.open(`Director ${director.name} eliminado correctamente`, 'Cerrar', {
             duration: 3000,
@@ -118,12 +119,16 @@ export class MainComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error al eliminar director:', error);
-          this.snackBar.open('Error al eliminar director', 'Cerrar', {
-            duration: 3000,
+          const mensaje = 'No se puede eliminar porque hay peliculas asociadas';
+          this.snackBar.open(mensaje, 'Cerrar', {
+            duration: 5000,
             verticalPosition: 'top'
           });
+        },
+        complete: () => {
+          console.log('Operación completada');
         }
       });
     }
-  }
+  }  
 }

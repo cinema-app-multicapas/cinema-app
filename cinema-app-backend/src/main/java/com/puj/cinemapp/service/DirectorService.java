@@ -1,11 +1,15 @@
 package com.puj.cinemapp.service;
 
-import com.puj.cinemapp.dto.DirectorDTO;
-import com.puj.cinemapp.model.Director;
+import com.puj.cinemapp.domain.dto.DirectorDTO;
+import com.puj.cinemapp.domain.model.Director;
 import com.puj.cinemapp.repository.DirectorRepository;
+import com.puj.cinemapp.repository.MovieRepository;
+
+import org.hibernate.Hibernate;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,6 +19,9 @@ public class DirectorService {
 
     @Autowired
     private DirectorRepository directorRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;    
 
     public List<DirectorDTO> getAllDirectors() {
         return directorRepository.findAll()
@@ -29,11 +36,13 @@ public class DirectorService {
                 .orElse(null);
     }
 
+    @Transactional
     public DirectorDTO createDirector(DirectorDTO dto) {
         Director director = convertToEntity(dto);
         return convertToDTO(directorRepository.save(director));
     }
 
+    @Transactional
     public DirectorDTO updateDirector(Long id, DirectorDTO dto) {
         Optional<Director> optionalDirector = directorRepository.findById(id);
         if (optionalDirector.isPresent()) {
@@ -49,28 +58,32 @@ public class DirectorService {
         return null;
     }
 
-    public void deleteDirector(Long id) {
-        directorRepository.deleteById(id);
+    @Transactional
+    public String deleteDirector(Long id) {
+        Optional<Director> directorOpt = directorRepository.findById(id);
+        if (directorOpt.isPresent()) {
+            Director director = directorOpt.get();
+
+            Hibernate.initialize(director.getMovies()); // <-- Forzamos la carga de la lista
+
+            if (director.getMovies() != null && !director.getMovies().isEmpty()) {
+                return "No se puede eliminar el director porque tiene películas asociadas.";
+            }
+
+            directorRepository.delete(director);
+            return "Director eliminado exitosamente.";
+        } else {
+            return "Director no encontrado con id " + id;
+        }
     }
+
 
     private DirectorDTO convertToDTO(Director director) {
-        DirectorDTO dto = new DirectorDTO();
-        dto.setId(director.getId());
-        dto.setName(director.getName());
-        dto.setBirthDate(director.getBirthDate());
-        dto.setNationality(director.getNationality());
-        dto.setBiography(director.getBiography());
-        dto.setPhotoUrl(director.getPhotoUrl());
-        return dto;
+        return modelMapper.map(director, DirectorDTO.class);
     }
-
+    
     private Director convertToEntity(DirectorDTO dto) {
-        Director director = new Director();
-        director.setName(dto.getName());
-        director.setBirthDate(dto.getBirthDate());
-        director.setNationality(dto.getNationality());
-        director.setBiography(dto.getBiography());
-        director.setPhotoUrl(dto.getPhotoUrl());
-        return director;
+        return modelMapper.map(dto, Director.class);
     }
+    
 }

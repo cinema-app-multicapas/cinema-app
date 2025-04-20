@@ -1,8 +1,9 @@
 package com.puj.cinemapp.controller;
 
-import com.puj.cinemapp.dto.DirectorDTO;
+import com.puj.cinemapp.domain.dto.DirectorDTO;
 import com.puj.cinemapp.service.DirectorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +36,16 @@ public class DirectorController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteDirector(@PathVariable Long id) {
-        directorService.deleteDirector(id);
+    public ResponseEntity<String> deleteDirector(@PathVariable Long id) {
+        String result = directorService.deleteDirector(id);
+
+        if (result.equals("Director eliminado exitosamente.")) {
+            return ResponseEntity.ok(result);
+        } else if (result.startsWith("No se puede eliminar porque hay peliculas asociadas")) {
+            return ResponseEntity.badRequest().body(result); // 400
+        } else {
+            return ResponseEntity.status(404).body(result); // 404
+        }
     }
+
 }

@@ -1,6 +1,6 @@
 package com.puj.cinemapp.controller;
 
-import com.puj.cinemapp.dto.MovieDTO;
+import com.puj.cinemapp.domain.dto.MovieDTO;
 import com.puj.cinemapp.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

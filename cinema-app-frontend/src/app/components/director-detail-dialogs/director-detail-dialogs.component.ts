@@ -284,7 +284,7 @@ export class DirectorDetailDialogsComponent implements OnInit {
         this.directorMovies.push(result);
           
         // Mostrar mensaje de confirmación
-        this.snackBar.open(`Director ${result.name} añadido correctamente`, 'Cerrar', {
+        this.snackBar.open(`Pelicula añadida correctamente`, 'Cerrar', {
           duration: 3000,
           verticalPosition: 'top'
         });        

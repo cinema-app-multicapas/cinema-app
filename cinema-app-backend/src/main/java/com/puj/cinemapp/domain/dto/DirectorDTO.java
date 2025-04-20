@@ -1,6 +1,9 @@
-package com.puj.cinemapp.dto;
+package com.puj.cinemapp.domain.dto;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import com.puj.cinemapp.domain.model.Movie;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

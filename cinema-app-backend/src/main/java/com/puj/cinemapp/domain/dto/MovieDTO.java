@@ -1,4 +1,6 @@
-package com.puj.cinemapp.dto;
+package com.puj.cinemapp.domain.dto;
+
+import com.puj.cinemapp.domain.model.Director;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,5 +19,6 @@ public class MovieDTO {
     private int duration;
     private String posterUrl;
     private Long directorId;
+    private Director director;
 
 }
