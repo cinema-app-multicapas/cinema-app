@@ -64,7 +64,7 @@ public class MovieService {
             movie.setSynopsis(dto.getSynopsis());
             movie.setDuration(dto.getDuration());
             movie.setPosterUrl(dto.getPosterUrl());
-            movie.setDirector(dto.getDirector());
+
 
             return convertToDTO(movieRepository.save(movie));
         }
@@ -96,7 +96,6 @@ public class MovieService {
     
     private Movie convertToEntity(MovieDTO dto, Director director) {
         Movie movie = modelMapper.map(dto, Movie.class);
-        movie.setDirector(director); 
         return movie;
     }
     

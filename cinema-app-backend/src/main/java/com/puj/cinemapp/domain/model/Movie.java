@@ -28,9 +28,6 @@ public class Movie {
     private String synopsis;
     private int duration; // Duración en minutos
     private String posterUrl;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "director_id")
-    private Director director;
+    private Long directorId;
 
 }

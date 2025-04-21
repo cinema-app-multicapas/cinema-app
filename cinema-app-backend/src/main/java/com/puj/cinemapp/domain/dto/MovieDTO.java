@@ -19,6 +19,4 @@ public class MovieDTO {
     private int duration;
     private String posterUrl;
     private Long directorId;
-    private Director director;
-
 }

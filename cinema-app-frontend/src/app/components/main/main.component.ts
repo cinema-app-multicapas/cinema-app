@@ -111,6 +111,7 @@ export class MainComponent implements OnInit {
       this.directorService.deleteDirector(director.id!).subscribe({
         next: (response) => {
           console.log('Respuesta del servidor:', response);
+          // Remove the director from the local array to update the UI
           this.directors = this.directors.filter(d => d.id !== director.id);
           this.snackBar.open(`Director ${director.name} eliminado correctamente`, 'Cerrar', {
             duration: 3000,
@@ -119,16 +120,23 @@ export class MainComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error al eliminar director:', error);
-          const mensaje = 'No se puede eliminar porque hay peliculas asociadas';
-          this.snackBar.open(mensaje, 'Cerrar', {
-            duration: 5000,
-            verticalPosition: 'top'
-          });
-        },
-        complete: () => {
-          console.log('Operación completada');
+          
+          // Check the actual error response from the server
+          if (error.status === 400 && error.error && error.error.message) {
+            // Show the actual error message from the server
+            this.snackBar.open(error.error.message, 'Cerrar', {
+              duration: 5000,
+              verticalPosition: 'top'
+            });
+          } else {
+            // Generic error message
+            this.snackBar.open('No se puede eliminar porque hay películas asociadas', 'Cerrar', {
+              duration: 5000,
+              verticalPosition: 'top'
+            });
+          }
         }
       });
     }
-  }  
+  }
 }

@@ -8,5 +8,6 @@ import com.puj.cinemapp.domain.model.Movie;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findByDirectorId(Long directorId);
+    boolean existsByDirectorId(Long directorId);
     void deleteByDirectorId(Long directorId);
 }

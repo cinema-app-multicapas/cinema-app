@@ -28,18 +28,7 @@ export class DirectorService {
   }
 
   deleteDirector(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, { observe: 'response' });
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Algo salió mal, por favor intenta nuevamente.';
-    if (error.status === 400) {
-      errorMessage = `Error: ${error.error}`;
-    } else if (error.status === 404) {
-      errorMessage = 'No se encontró el director.';
-    } else if (error.status === 500) {
-      errorMessage = 'Hubo un problema con el servidor.';
-    }
-    return throwError(() => new Error(errorMessage)); // Lanza el error para que se pueda manejar en el componente
-  }
 }

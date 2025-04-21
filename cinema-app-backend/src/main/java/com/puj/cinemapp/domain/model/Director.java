@@ -28,8 +28,5 @@ public class Director {
     private String nationality;
     private String biography;
     private String photoUrl;
-
-    @OneToMany(mappedBy = "director", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Movie> movies;
-
+    
 }
