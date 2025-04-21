@@ -1,9 +1,15 @@
-FROM openjdk:17-slim
-
+FROM maven:3.8-openjdk-17 AS builder
 WORKDIR /app
+COPY pom.xml .
 
-COPY target/*.jar app.jar
+RUN mvn dependency:go-offline
 
-EXPOSE 8080
+COPY src ./src
 
+RUN mvn clean package -DskipTests
+
+FROM openjdk:17-slim
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
+EXPOSE 8082
 ENTRYPOINT ["java", "-jar", "app.jar"]
