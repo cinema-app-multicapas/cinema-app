@@ -1,6 +1,10 @@
 # 🐳 Proyecto con Docker Compose
 Este proyecto utiliza **Docker Compose** para facilitar el despliegue y la ejecución de todos los servicios necesarios.
 
+- Oscar Alejandro Rodriguez Gómez
+- Andres Felipe Ruge Passito
+- Juan Felipe Gonzalez Quintero
+
 ## 🚀 Requisitos
 Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas en tu sistema:
 - [Docker](https://docs.docker.com/get-docker/)
